@@ -30,7 +30,7 @@ namespace BongOliver.Services.AuthService
 
             if (user == null) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "User không tồn tại!" };
             if (user.IsDelete) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Tài khoản của bạn đã bị vô hiệu!" };
-            //if (!user.IsVerify) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Tài khoản của bạn chưa được xác thực!" };
+            if (!user.IsVerify) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Tài khoản của bạn chưa được xác thực!" };
             if (user.RoleId == Constant.ROLE_ADMIN) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Có gì đó không ổn!" };
 
             string code = Guid.NewGuid().ToString("N").Substring(0, 10);

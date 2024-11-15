@@ -1,6 +1,6 @@
 ﻿namespace BongOliver.Constants
 {
-    public class Constant
+    public class AppConst
     {
         public const string SUCCESS = "Success";
         public const int SUCCESS_CODE = 200;
@@ -27,9 +27,11 @@
         public const bool FEMALE = true;
         public const bool NOT_VERIFY = true;
         public const bool VERIFY = false;
-        public const bool NOT_DELETE = true;
-        public const bool DELETE = false;
+        public const bool NOT_DELETE = false;
+        public const bool DELETE = true;
 
         public const string DEFAULT_AVATAR = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png";
+
+        public const int MINUTE_PER_HOUR = 60;
     }
 }

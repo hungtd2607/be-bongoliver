@@ -28,10 +28,10 @@ namespace BongOliver.Services.AuthService
         {
             var user = _userRepository.GetUserByEmail(email);
 
-            if (user == null) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "User không tồn tại!" };
-            if (user.IsDelete) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Tài khoản của bạn đã bị vô hiệu!" };
-            if (!user.IsVerify) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Tài khoản của bạn chưa được xác thực!" };
-            if (user.RoleId == Constant.ROLE_ADMIN) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Có gì đó không ổn!" };
+            if (user == null) return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "User không tồn tại!" };
+            if (user.IsDelete) return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "Tài khoản của bạn đã bị vô hiệu!" };
+            if (!user.IsVerify) return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "Tài khoản của bạn chưa được xác thực!" };
+            if (user.RoleId == AppConst.ROLE_ADMIN) return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "Có gì đó không ổn!" };
 
             string code = Guid.NewGuid().ToString("N").Substring(0, 10);
             using var hmac = new HMACSHA512();
@@ -55,33 +55,33 @@ namespace BongOliver.Services.AuthService
                 return new ResponseDTO() { Message = "Yêu cầu cấp lại mật khẩu thành công!" };
             }
             else
-                return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Yêu cầu cấp lại mật khẩu thất bại!" };
+                return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "Yêu cầu cấp lại mật khẩu thất bại!" };
         }
 
         public ResponseDTO Login(LoginUserDTO loginUserDTO)
         {
             var currentUser = _userRepository.GetUserByUsername(loginUserDTO.Username);
-            if (currentUser == null) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Username không tồn tại!" };
-            if (currentUser.IsDelete) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Tài khoản của bạn đã bị vô hiệu!" };
+            if (currentUser == null) return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "Username không tồn tại!" };
+            if (currentUser.IsDelete) return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "Tài khoản của bạn đã bị vô hiệu!" };
 
             using var hmac = new HMACSHA512(currentUser.PasswordSalt);
             var passwordBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginUserDTO.Password));
 
             for (int i = 0; i < currentUser.PasswordHash.Length; i++)
             {
-                if (currentUser.PasswordHash[i] != passwordBytes[i]) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Mật khẩu không chính xác!" };
+                if (currentUser.PasswordHash[i] != passwordBytes[i]) return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "Mật khẩu không chính xác!" };
             }
 
-            return new ResponseDTO() { Code = Constant.SUCCESS_CODE, Message = "Đăng nhâp thành công!", Data = _tokenService.CreateToken(currentUser) };
+            return new ResponseDTO() { Code = AppConst.SUCCESS_CODE, Message = "Đăng nhâp thành công!", Data = _tokenService.CreateToken(currentUser) };
         }
 
         public ResponseDTO Register(RegisterUserDTO registerUserDTO)
         {
             var currentUser = _userRepository.GetUserByUsername(registerUserDTO.Username);
-            if (currentUser != null) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Username đã tồn tại!" };
+            if (currentUser != null) return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "Username đã tồn tại!" };
 
             currentUser = _userRepository.GetUserByEmail(registerUserDTO.Email);
-            if (currentUser != null) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Email đã tồn tại!" };
+            if (currentUser != null) return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "Email đã tồn tại!" };
 
             using var hmac = new HMACSHA512();
             var passwordBytes = Encoding.UTF8.GetBytes(registerUserDTO.Password);
@@ -96,12 +96,12 @@ namespace BongOliver.Services.AuthService
                 Username = registerUserDTO.Username,
                 PasswordSalt = hmac.Key,
                 PasswordHash = hmac.ComputeHash(passwordBytes),
-                RoleId = Constant.ROLE_USER
+                RoleId = AppConst.ROLE_USER
             };
 
             _userRepository.CreateUser(newUser);
             if (_userRepository.IsSaveChanges()) return new ResponseDTO() { Message = "Đăng ký thành công!" };
-            else return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Đăng ký thất bại!" };
+            else return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "Đăng ký thất bại!" };
         }
     }
 }

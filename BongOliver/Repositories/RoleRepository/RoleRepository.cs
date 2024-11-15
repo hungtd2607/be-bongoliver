@@ -18,9 +18,9 @@ namespace BongOliver.Repositories.RoleRepository
             _context.Roles.Add(createRole);
         }
 
-        public void DeleteRole(int id)
+        public void DeleteRole(Role role)
         {
-            throw new NotImplementedException();
+            _context.Roles.Remove(role);
         }
 
         public Role GetRoleById(int id)

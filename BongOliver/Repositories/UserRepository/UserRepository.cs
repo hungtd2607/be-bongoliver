@@ -43,7 +43,7 @@ namespace BongOliver.Repositories.UserRepository
 
         public List<User> GetUsers(ref int total, int? page = 1, int? pageSize = 10, string? key = "", string? sortBy = "ID")
         {
-            var query = _context.Users.Include(r => r.Role).Where(r => r.RoleId != Constant.ROLE_ADMIN).AsQueryable();
+            var query = _context.Users.Include(r => r.Role).Where(r => r.RoleId != AppConst.ROLE_ADMIN).AsQueryable();
 
             if (!string.IsNullOrEmpty(key))
             {

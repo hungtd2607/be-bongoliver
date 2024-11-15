@@ -23,19 +23,30 @@ namespace BongOliver.Services.RoleService
             _roleRepository.CreateRole(role);
 
             if (_roleRepository.IsSaveChanges()) return new ResponseDTO() { Message = "Tạo thành công" };
-            else return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Tạo thất bại" };
+            else return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "Tạo thất bại" };
         }
 
         public ResponseDTO DeleteRole(int id)
         {
-            throw new NotImplementedException();
+            var role = _roleRepository.GetRoleById(id);
+            if (role == null) return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "Role không tồn tại" };
+
+            //TODO
+            //role.Is = nameRole;
+            role.Update = DateTime.Now;
+
+            _roleRepository.UpdateRole(role);
+            if (_roleRepository.IsSaveChanges())
+                return new ResponseDTO() { Message = "Cập nhật thành công" };
+            else
+                return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "Cập nhật thất bại" };
         }
 
         public ResponseDTO GetRoleById(int id)
         {
             var role = _roleRepository.GetRoleById(id);
 
-            if (role == null) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Role không tồn tại" };
+            if (role == null) return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "Role không tồn tại" };
             else
                 return new ResponseDTO() { Data = new RoleDTO(role) };
         }
@@ -44,7 +55,7 @@ namespace BongOliver.Services.RoleService
         {
             var total = _roleRepository.GetTotal();
 
-            if (total == 0) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Không có Role nào" };
+            if (total == 0) return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "Không có Role nào" };
 
             var roles = _roleRepository.GetRoles(ref total, page, pageSize, key, sortBy);
 
@@ -57,16 +68,17 @@ namespace BongOliver.Services.RoleService
 
         public ResponseDTO UpdateRole(int id, string nameRole)
         {
-            //var role = _roleRepository.GetRoleById(id);
-            //if (role == null) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Role không tồn tại" };
-            //
-            //role.Name = nameRole;
-            //
-            //_roleRepository.UpdateRole(role);
-            //if (_roleRepository.IsSaveChanges())
-            //    return new ResponseDTO() { Message = "Cập nhật thành công" };
-            //else
-                return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Cập nhật thất bại" };
+            var role = _roleRepository.GetRoleById(id);
+            if (role == null) return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "Role không tồn tại" };
+            
+            role.Name = nameRole;
+            role.Update = DateTime.Now;
+
+            _roleRepository.UpdateRole(role);
+            if (_roleRepository.IsSaveChanges())
+                return new ResponseDTO() { Message = "Cập nhật thành công" };
+            else
+                return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "Cập nhật thất bại" };
         }
     }
 }

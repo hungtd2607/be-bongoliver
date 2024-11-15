@@ -1,10 +1,16 @@
 using BongOliver.Models;
+using BongOliver.Repositories.BookingRepository;
+using BongOliver.Repositories.CategoryRepository;
 using BongOliver.Repositories.RoleRepository;
+using BongOliver.Repositories.ServiceRepository;
 using BongOliver.Repositories.UserRepository;
 using BongOliver.Services.AccountService;
 using BongOliver.Services.AuthService;
+using BongOliver.Services.BookingService;
+using BongOliver.Services.CategoryService;
 using BongOliver.Services.MailService;
 using BongOliver.Services.RoleService;
+using BongOliver.Services.ServiceService;
 using BongOliver.Services.TokenService;
 using BongOliver.Services.UserService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -54,7 +60,13 @@ services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 services.AddScoped<IUserRepository, UserRepository>();
 services.AddScoped<IRoleRepository, RoleRepository>();
+services.AddScoped<ICategoryRepository, CategoryRepository>();
+services.AddScoped<IServiceRepository, ServiceRepository>();
+services.AddScoped<IBookingRepository, BookingRepository>();
 
+services.AddScoped<IBookingService, BookingService>();
+services.AddScoped<IServiceService, ServiceService>();
+services.AddScoped<ICategoryService, CategoryService>();
 services.AddScoped<IMailService, MailService>();
 services.AddScoped<ITokenService, TokenService>();
 services.AddScoped<IAuthService, AuthService>();

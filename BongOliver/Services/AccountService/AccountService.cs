@@ -24,15 +24,15 @@ namespace BongOliver.Services.AccountService
             var idUser = Int16.Parse(_tokenService.GetTokenData("id"));
 
             var user = _userRepository.GetUserById(idUser);
-            if (user == null) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "User không tồn tại!" };
-            if (user.IsDelete) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Tài khoản của bạn đã bị vô hiệu!" };
+            if (user == null) return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "User không tồn tại!" };
+            if (user.IsDelete) return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "Tài khoản của bạn đã bị vô hiệu!" };
 
             using var hmac = new HMACSHA512(user.PasswordSalt);
             var passwordBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(changePasswordDTO.OldPassword));
 
             for (int i = 0; i < user.PasswordHash.Length; i++)
             {
-                if (user.PasswordHash[i] != passwordBytes[i]) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Mật khẩu không chính xác!" };
+                if (user.PasswordHash[i] != passwordBytes[i]) return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "Mật khẩu không chính xác!" };
             }
 
             passwordBytes = Encoding.UTF8.GetBytes(changePasswordDTO.NewPassword);
@@ -45,7 +45,7 @@ namespace BongOliver.Services.AccountService
             if (_userRepository.IsSaveChanges())
                 return new ResponseDTO() { Message = "Đổi mật khẩu thành công!" };
             else
-                return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Đổi mật khẩu thất bại!" };
+                return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "Đổi mật khẩu thất bại!" };
         }
 
         public ResponseDTO GetMyProfile()
@@ -53,8 +53,8 @@ namespace BongOliver.Services.AccountService
             var idUser = Int16.Parse(_tokenService.GetTokenData("id"));
 
             var user = _userRepository.GetUserById(idUser);
-            if (user == null) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "User không tồn tại!" };
-            if (user.IsDelete) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Tài khoản của bạn đã bị vô hiệu!" };
+            if (user == null) return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "User không tồn tại!" };
+            if (user.IsDelete) return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "Tài khoản của bạn đã bị vô hiệu!" };
 
             return new ResponseDTO() { Data = new UserDTO(user) };
         }
@@ -63,7 +63,7 @@ namespace BongOliver.Services.AccountService
         {
             var id = Int16.Parse(_tokenService.GetTokenData("id"));
             var user = _userRepository.GetUserById(id);
-            if (user == null) return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "User không tồn tại" };
+            if (user == null) return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "User không tồn tại" };
 
             if (!user.Email.Equals(updateUserDTO.Email))
             {
@@ -84,7 +84,7 @@ namespace BongOliver.Services.AccountService
             if (_userRepository.IsSaveChanges())
                 return new ResponseDTO() { Message = "Cập nhật thành công" };
             else
-                return new ResponseDTO() { Code = Constant.FAILED_CODE, Message = "Cập nhật thất bại" };
+                return new ResponseDTO() { Code = AppConst.FAILED_CODE, Message = "Cập nhật thất bại" };
         }
     }
 }

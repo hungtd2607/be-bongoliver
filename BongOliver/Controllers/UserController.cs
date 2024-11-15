@@ -1,5 +1,7 @@
-﻿using BongOliver.DTOs.User;
+﻿using BongOliver.Constants;
+using BongOliver.DTOs.User;
 using BongOliver.Services.UserService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +9,7 @@ namespace BongOliver.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = AppConst.ROLE_NAME_ADMIN)]
     public class UserController : ControllerBase
     {
         private IUserService _userService;

@@ -19,16 +19,16 @@ namespace BongOliver.Models
         [MaxLength(10)]
         public string Phone { get; set; }
         [MaxLength(256)]
-        public string Avatar { get; set; } = Constant.DEFAULT_AVATAR;
-        public bool Gender { get; set; } = Constant.MALE;
+        public string Avatar { get; set; } = AppConst.DEFAULT_AVATAR;
+        public bool Gender { get; set; } = AppConst.MALE;
         public DateTime DateOfBirth { get; set; } = DateTime.Now;
         [Required]
         [StringLength(32)]
         public string Username { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
-        public bool IsVerify { get; set; } = Constant.NOT_VERIFY;
-        public bool IsDelete { get; set; } = Constant.NOT_DELETE;
+        public bool IsVerify { get; set; } = AppConst.NOT_VERIFY;
+        public bool IsDelete { get; set; } = AppConst.NOT_DELETE;
         public DateTime Create { get; set; } = DateTime.Now;
         public DateTime Update { get; set; } = DateTime.Now;
         public int RoleId { get; set; }

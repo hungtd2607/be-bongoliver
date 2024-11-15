@@ -4,6 +4,7 @@ using BongOliver.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BongOliver.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241107050521_AddServiceAndCategory")]
+    partial class AddServiceAndCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,12 +42,6 @@ namespace BongOliver.Migrations
 
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
-
-                    b.Property<int>("Discount")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDelete")
-                        .HasColumnType("bit");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -125,6 +122,9 @@ namespace BongOliver.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("BookingId")
+                        .HasColumnType("int");
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
@@ -157,6 +157,8 @@ namespace BongOliver.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BookingId");
 
                     b.HasIndex("CategoryId");
 
@@ -237,21 +239,6 @@ namespace BongOliver.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("BookingService", b =>
-                {
-                    b.Property<int>("BookingsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ServicesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BookingsId", "ServicesId");
-
-                    b.HasIndex("ServicesId");
-
-                    b.ToTable("BookingService");
-                });
-
             modelBuilder.Entity("BongOliver.Models.Booking", b =>
                 {
                     b.HasOne("BongOliver.Models.User", "Customer")
@@ -273,6 +260,10 @@ namespace BongOliver.Migrations
 
             modelBuilder.Entity("BongOliver.Models.Service", b =>
                 {
+                    b.HasOne("BongOliver.Models.Booking", null)
+                        .WithMany("Services")
+                        .HasForeignKey("BookingId");
+
                     b.HasOne("BongOliver.Models.Category", "Category")
                         .WithMany("Services")
                         .HasForeignKey("CategoryId")
@@ -293,19 +284,9 @@ namespace BongOliver.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("BookingService", b =>
+            modelBuilder.Entity("BongOliver.Models.Booking", b =>
                 {
-                    b.HasOne("BongOliver.Models.Booking", null)
-                        .WithMany()
-                        .HasForeignKey("BookingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BongOliver.Models.Service", null)
-                        .WithMany()
-                        .HasForeignKey("ServicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Services");
                 });
 
             modelBuilder.Entity("BongOliver.Models.Category", b =>

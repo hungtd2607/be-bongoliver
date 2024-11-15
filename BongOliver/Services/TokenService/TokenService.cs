@@ -36,13 +36,13 @@ namespace BongOliver.Services.TokenService
             };
             
             
-            if (user.RoleId == Constant.ROLE_ADMIN)
-                claims.Add(new Claim(ClaimTypes.Role, Constant.ROLE_NAME_ADMIN));
+            if (user.RoleId == AppConst.ROLE_ADMIN)
+                claims.Add(new Claim(ClaimTypes.Role, AppConst.ROLE_NAME_ADMIN));
             else
-            if (user.RoleId == Constant.ROLE_STYLIST)
-                claims.Add(new Claim(ClaimTypes.Role, Constant.ROLE_NAME_STYLIST));
+            if (user.RoleId == AppConst.ROLE_STYLIST)
+                claims.Add(new Claim(ClaimTypes.Role, AppConst.ROLE_NAME_STYLIST));
             else
-                claims.Add(new Claim(ClaimTypes.Role, Constant.ROLE_NAME_USER));
+                claims.Add(new Claim(ClaimTypes.Role, AppConst.ROLE_NAME_USER));
 
             var symmetricKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["TokenKey"]));
             

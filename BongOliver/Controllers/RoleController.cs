@@ -12,7 +12,7 @@ namespace BongOliver.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = Constant.ROLE_NAME_ADMIN)]
+    [Authorize(Roles = AppConst.ROLE_NAME_ADMIN)]
     public class RoleController : ControllerBase
     {
         private IRoleService _roleService;

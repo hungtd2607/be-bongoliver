@@ -11,9 +11,8 @@ namespace BongOliver.DTOs.Booking
         public string Comment { get; set; }
         public int Status { get; set; }
         public DateTime Time { get; set; }
-        public int CustomerId { get; set; }
+        public int Discount { get; set; }
         public UserDTO Customer { get; set; }
-        public int StylistId { get; set; }
         public UserDTO Stylist { get; set; }
         public ICollection<ServiceDTO> Services { get; set; }
         public BookingDTO(Models.Booking booking)
@@ -22,9 +21,8 @@ namespace BongOliver.DTOs.Booking
             Comment = booking.Comment;
             Status = booking.Status;
             Time = booking.Time;
-            CustomerId = booking.CustomerId;
+            Discount = booking.Discount;
             Customer = new UserDTO(booking.Customer);
-            StylistId = booking.StylistId;
             Stylist = new UserDTO(booking.Stylist);
             Services = booking.Services.Select(s => new ServiceDTO(s)).ToList();
         }

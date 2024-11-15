@@ -9,8 +9,10 @@ namespace BongOliver.Models
         [Key]
         public int Id { get; set; }
         public string Comment { get; set; } = string.Empty;
-        public int Status { get; set; } = Constant.STATUS_NEW;
+        public int Status { get; set; } = AppConst.STATUS_NEW;
         public DateTime Time { get; set; } = DateTime.Now;
+        public int Discount { get; set; } = 0;
+        public bool IsDelete { get; set; } = AppConst.NOT_DELETE;
         public DateTime Create { get; set; } = DateTime.Now;
         public DateTime Update { get; set; } = DateTime.Now;
         public int CustomerId { get; set; }

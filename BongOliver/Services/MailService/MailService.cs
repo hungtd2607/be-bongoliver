@@ -20,27 +20,32 @@ namespace BongOliver.Services.MailService
         }
         public bool SendEmail(string toMail, string subject, string body)
         {
-            try
+            for(int i = 0; i < 5; i++)
             {
-                var email = new MimeMessage();
-                email.From.Add(MailboxAddress.Parse(_config.GetSection("Email:From").Value));
-                email.To.Add(MailboxAddress.Parse(toMail));
-                email.Subject = subject;
-                email.Body = new TextPart(TextFormat.Text) { Text = body };
+                try
+                {
+                    var email = new MimeMessage();
+                    email.From.Add(MailboxAddress.Parse(_config.GetSection("Email:From").Value));
+                    email.To.Add(MailboxAddress.Parse(toMail));
+                    email.Subject = subject;
+                    email.Body = new TextPart(TextFormat.Text) { Text = body };
 
-                using var smtp = new SmtpClient();
+                    using var smtp = new SmtpClient();
 
-                smtp.Connect(_config.GetSection("Email:Host").Value, int.Parse(_config.GetSection("Email:Port").Value), SecureSocketOptions.StartTls);
-                smtp.Authenticate(_config.GetSection("Email:From").Value, _config.GetSection("Email:Password").Value);
-                smtp.Send(email);
-                smtp.Disconnect(true);
+                    smtp.Connect(_config.GetSection("Email:Host").Value, int.Parse(_config.GetSection("Email:Port").Value), SecureSocketOptions.StartTls);
+                    smtp.Authenticate(_config.GetSection("Email:From").Value, _config.GetSection("Email:Password").Value);
+                    smtp.Send(email);
+                    smtp.Disconnect(true);
 
-                return true;
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    continue;
+                }
             }
-            catch (Exception ex)
-            {
-                return false;
-            }
+
+            return false;
         }
     }
 }

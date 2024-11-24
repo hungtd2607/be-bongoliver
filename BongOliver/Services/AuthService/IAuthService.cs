@@ -8,6 +8,8 @@ namespace BongOliver.Services.AuthService
         ResponseDTO Register(RegisterUserDTO registerUserDTO);
         ResponseDTO Login(LoginUserDTO loginUserDTO);
         ResponseDTO ForgotPassword(string email);
+        ResponseDTO ResetPassword(string email, string otp);
+        bool VerifyOTP(string email, string otp);
         //ResponseDTO VerifyEmail(string email, string token);
     }
 }

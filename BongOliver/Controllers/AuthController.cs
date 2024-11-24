@@ -41,5 +41,13 @@ namespace BongOliver.Controllers
             var res = _authService.ForgotPassword(email);
             return StatusCode(res.Code, res);
         }
+
+        [AllowAnonymous]
+        [HttpPost("reset_password")]
+        public ActionResult ForgotPassword(string email, string otp)
+        {
+            var res = _authService.ResetPassword(email, otp);
+            return StatusCode(res.Code, res);
+        }
     }
 }

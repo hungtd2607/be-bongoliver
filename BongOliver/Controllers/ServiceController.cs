@@ -22,6 +22,12 @@ namespace BongOliver.Controllers
             var res = _serviceService.GetServices(page, pageSize, key, sortBy);
             return StatusCode(res.Code, res);
         }
+        [HttpGet("category/{id}")]
+        public IActionResult GetServicesByCategory(int? page = 1, int? pageSize = 10, string? key = "", string? sortBy = "ID")
+        {
+            var res = _serviceService.GetServices(page, pageSize, key, sortBy);
+            return StatusCode(res.Code, res);
+        }
         [HttpPost]
         public IActionResult CreateService(CreateServiceDTO createServiceDTO)
         {
